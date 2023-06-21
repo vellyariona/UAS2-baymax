@@ -1,6 +1,7 @@
 package com.example.uas2;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
 
 import android.animation.AnimatorSet;
@@ -23,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
     Paint mCirclePaint = new Paint();
     Paint mHeadPaint = new Paint();
     Paint mStroke = new Paint();
+    private ConstraintLayout mainLayout;
+
 
 
     @Override
@@ -34,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
         mCirclePaint.setColor(getResources().getColor(R.color.black));
         mHeadPaint.setColor(getResources().getColor(R.color.white));
         mStroke.setColor(getResources().getColor(R.color.black));
+
+        mainLayout = findViewById(R.id.main_layout);
     }
 
     @Override
@@ -50,10 +55,23 @@ public class MainActivity extends AppCompatActivity {
 
         mStroke.setStrokeWidth(20f);
 
-        drawHead();
-        drawRightEye();
-        drawLeftEye();
-        drawEyeConnector();
+        mainLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                animateBaymax(view);
+                mColorBackground = ResourcesCompat.getColor(getResources(), R.color.blue, null);
+                mCanvas = new Canvas(mBitmap);
+                mCanvas.drawColor(mColorBackground);
+                drawHead();
+                drawRightEye();
+                drawLeftEye();
+                drawEyeConnector();
+            }
+        });
+//        drawHead();
+//        drawRightEye();
+//        drawLeftEye();
+//        drawEyeConnector();
     }
 
     private void drawHead() {
@@ -79,5 +97,22 @@ public class MainActivity extends AppCompatActivity {
     private void drawEyeConnector() {
         int vWidth = mImgView.getWidth();
         mCanvas.drawLine(vWidth/2-100, 800, vWidth/2+100,800, mStroke);
+    }
+
+//    untuk no.3
+    public void animateBaymax(View view){
+        ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(mImgView, "alpha", 0f, 1f);
+        alphaAnimator.setDuration(1000);
+
+        ObjectAnimator rotationAnimator = ObjectAnimator.ofFloat(mImgView, "rotationY", 180);
+        rotationAnimator.setDuration(1000);
+
+        ObjectAnimator alphaAnimator2 = ObjectAnimator.ofFloat(mImgView, "alpha", 1f, 0f);
+        alphaAnimator2.setDuration(1000);
+        alphaAnimator2.start();
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playSequentially(alphaAnimator, rotationAnimator, alphaAnimator2);
+        animatorSet.start();
     }
 }
