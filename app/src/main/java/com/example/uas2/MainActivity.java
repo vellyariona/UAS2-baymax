@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
     Paint mHeadPaint = new Paint();
     Paint mStroke = new Paint();
 
-    private Paint mPaint = new Paint();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
